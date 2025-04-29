@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "konva": "^9.3.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-konva": "^18.2.10",
     "redux": "^4.2.1"
   },
   "devDependencies": {

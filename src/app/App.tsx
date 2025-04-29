@@ -1,18 +1,18 @@
 import { FC } from "react";
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "@/app/Layout";
-import { Home, NoMatch } from "@/pages";
+import Header from "@/components/Header";
+import Hexagons from "@/components/Hexagons";
 
 const App: FC = () => {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
-    </>
+    <div className="bg-gray-100 flex flex-col h-screen">
+      <div className="w-full">
+        <Header />
+      </div>
+
+      <div className="flex-grow flex items-center justify-center">
+        <Hexagons width={600} height={600} />
+      </div>
+    </div>
   );
 };
 
