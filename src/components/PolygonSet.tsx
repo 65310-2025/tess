@@ -1,0 +1,1 @@
+// Polygons in this polygon set never overlap
