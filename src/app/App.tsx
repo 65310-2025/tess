@@ -2,6 +2,8 @@ import { FC } from "react";
 import Header from "@/components/Header";
 import Hexagons from "@/components/Hexagons";
 import Controls from "@/components/Controls";
+import TilingCanvas from "@/components/RegularPolygonCanvas";
+import RegularPolygonCanvas from "@/components/RegularPolygonCanvas";
 
 const App: FC = () => {
   return (
@@ -10,13 +12,10 @@ const App: FC = () => {
         <Header />
       </div>
 
-      <div className="flex justify-between items-center p-4">
-        <Controls />
+      <div className="flex justify-center p-4">
+        <RegularPolygonCanvas />
       </div>
 
-      <div className="flex justify-center">
-        <Hexagons width={600} height={600} />
-      </div>
     </div>
   );
 };
