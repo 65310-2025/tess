@@ -16,7 +16,6 @@ const App: FC = () => {
         <Tess
           width={600}
           height={600}
-          tiling={HexagonTiling}
         />
       </div>
 

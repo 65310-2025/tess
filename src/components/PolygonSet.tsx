@@ -1,8 +1,8 @@
 // Polygons in this polygon set never overlap
 // TODO: add a function to check if two polygons overlap
 
-import RegularPolygon from "./RegularPolygon";
-import Polygon from "./Polygon";
+import RegularPolygon from "./old/RegularPolygon";
+import Polygon from "./old/Polygon";
 
 class PolygonSet {
   polygons: Array<Polygon>;
