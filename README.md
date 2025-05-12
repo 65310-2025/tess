@@ -4,6 +4,13 @@ Tess is a web-based interface for building twist-tile tesselations.
 
 ## Usage
 
+First, clone into the repository and download the dependencies.
+```bash
+git clone https://github.com/65310-2025/tess.git
+cd tess
+npm install
+```
+
 To start the development server and run the project locally, use the following command:
 
 ```bash
