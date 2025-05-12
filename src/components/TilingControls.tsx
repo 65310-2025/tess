@@ -3,19 +3,21 @@
 
 import React from "react";
 
-interface PolygonTileParametersProps {
+interface TilingControlsProps {
   w: number;
   twistAngle: number;
   setW: (value: number) => void;
   setTwistAngle: (value: number) => void;
+  onExportToFOLD: () => void;
 }
 
-const PolygonTileParameters = ({
+const TilingControls = ({
   w,
   twistAngle,
   setW,
   setTwistAngle,
-}: PolygonTileParametersProps) => {
+  onExportToFOLD,
+}: TilingControlsProps) => {
   return (
     <div className="flex flex-col gap-4 p-4 border rounded-md bg-white shadow-sm w-full max-w-xs">
       <div className="flex flex-col">
@@ -49,8 +51,15 @@ const PolygonTileParameters = ({
           className="mt-1 border px-2 py-1 rounded-md"
         />
       </div>
+      {/* <div>
+        <button onClick={onExportToFOLD}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+        >
+          Export to FOLD
+        </button>
+      </div> */}
     </div>
   );
 };
 
-export default PolygonTileParameters;
+export default TilingControls;

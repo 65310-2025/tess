@@ -124,13 +124,13 @@ class PolygonTile {
       this.pleatVertices.push(babyVertex1, babyVertex2);
 
       const pleatLength = radius; // length of pleat
-      const rotatedVec1 = this.rotateVector(unitVec.x, unitVec.y, tiltAngle);
+      const rotatedVec1 = this.rotateVector(unitVec.x, unitVec.y, 90 - tiltAngle);
       const pleatEnd1 = new Vertex(
         babyVertex1.x + rotatedVec1.x * pleatLength,
         babyVertex1.y + rotatedVec1.y * pleatLength,
       );
 
-      const rotatedVec2 = this.rotateVector(unitVec.x, unitVec.y, tiltAngle); // reverse direction
+      const rotatedVec2 = this.rotateVector(unitVec.x, unitVec.y, 90 -tiltAngle); // reverse direction
       const pleatEnd2 = new Vertex(
         babyVertex2.x + rotatedVec2.x * pleatLength,
         babyVertex2.y + rotatedVec2.y * pleatLength,
@@ -142,7 +142,6 @@ class PolygonTile {
     }
     // construct lines emanating from those points, each making an angle tau with the edge from which it comes
     // finalize pleat edges by connecting the ends of the pleats
-
     for (let i = 1; i < tempPleatEdges.length - 1; i += 2) {
       const pleatVertex = this.intersectRays(
         tempPleatEdges[i],
@@ -152,13 +151,16 @@ class PolygonTile {
         continue;
       }
       this.pleatEdges.push(
-        new Edge(tempPleatEdges[i].start, pleatVertex, 1 * this.creaseParity),
+        new Edge(tempPleatEdges[i].start,
+          pleatVertex,
+          -1 * this.creaseParity
+        ),
       );
       this.pleatEdges.push(
         new Edge(
           tempPleatEdges[i + 1].start,
           pleatVertex,
-          -1 * this.creaseParity,
+          1 * this.creaseParity,
         ),
       );
       centralPolygonVertices.push(pleatVertex);
@@ -175,14 +177,14 @@ class PolygonTile {
           new Edge(
             tempPleatEdges[tempPleatEdges.length - 1].start,
             pleatVertex1,
-            1 * this.creaseParity,
+            -1 * this.creaseParity,
           ),
         );
         this.pleatEdges.push(
           new Edge(
             tempPleatEdges[0].start,
             pleatVertex1,
-            -1 * this.creaseParity,
+            1 * this.creaseParity,
           ),
         );
         centralPolygonVertices.push(pleatVertex1);
@@ -198,7 +200,6 @@ class PolygonTile {
       this.pleatVertices.push(start);
     }
   }
-
   copy(): PolygonTile {
     return new PolygonTile(
       this.n,
@@ -212,6 +213,21 @@ class PolygonTile {
     );
   }
 
+  // returns new polygon tile with inverted crease parity
+  invertCreaseParity(): PolygonTile { 
+    return new PolygonTile(
+      this.n,
+      this.pleatWidth,
+      this.tiltAngle,
+      this.center.x,
+      this.center.y,
+      this.sideLength,
+      this.rotationDeg,
+      -this.creaseParity,
+    );
+  }
+
+
   // TODO: change crease pattern
   // options: mm, mv, MM,
   // rotate the polygon tile, outputs new PolygonTile Object
@@ -224,6 +240,7 @@ class PolygonTile {
       this.center.y,
       this.sideLength,
       deg,
+      this.creaseParity,
     );
   }
 
@@ -235,7 +252,7 @@ class PolygonTile {
     const length = Math.hypot(dx, dy);
     const unitEdge = { x: dx / length, y: dy / length };
 
-    let orthogonal = { x: -unitEdge.y, y: unitEdge.x }; 
+    let orthogonal = { x: -unitEdge.y, y: unitEdge.x };
 
     const midpoint = {
       x: (edge.start.x + edge.end.x) / 2,

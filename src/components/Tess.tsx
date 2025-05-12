@@ -5,7 +5,7 @@ import Tiling from "./Tiling";
 import TilingCanvas from "./TilingCanvas";
 import PolygonTile from "./PolygonTile";
 import ShapesControls from "./ShapeSelect";
-import PolygonTileParameters from "./PolygonTileParameters";
+import PolygonTileParameters from "./TilingControls";
 import PolygonTileDisplay from "./PolygonTileDisplay";
 
 interface TessProps {
@@ -23,7 +23,7 @@ const Tess = ({ width, height }: TessProps) => {
           <Controls />
         </div> */}
 
-        <div className="flex justify-center">
+        <div className="flex justify-center p-4">
           <TilingCanvas width={width} height={height} />
         </div>
       </div>

@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { Stage, Layer, Line, Circle, Group } from "react-konva";
 import Tiling from "./Tiling";
 import PolygonTile from "./PolygonTile";
-import ShapesControls from "./ShapeSelect";
-import PolygonTileParameters from "./PolygonTileParameters";
+import ShapeSelect from "./ShapeSelect";
 import PolygonTileDisplay from "./PolygonTileDisplay";
+import TilingControls from "./TilingControls";
 import { KonvaEventObject, NodeConfig } from "konva/lib/Node";
 
 interface TilingCanvasProps {
@@ -16,8 +16,8 @@ const TilingCanvas = ({ width, height }: TilingCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [origamized, setOrigamized] = useState(false);
   const [currentPolygonTileN, setCurrentPolygonTileN] = useState(0);
-  const [w, setW] = useState(0.35);
-  const [twistAngle, setTwistAngle] = useState(70);
+  const [w, setW] = useState(0.25);
+  const [twistAngle, setTwistAngle] = useState(25);
   const [tiling, setTiling] = useState(new Tiling([]));
   const [bestSnapPoint, setBestSnapPoint] = useState<{
     cx: number;
@@ -107,19 +107,7 @@ const TilingCanvas = ({ width, height }: TilingCanvasProps) => {
       // rotationDeg = edgeAngle - angleStepDeg;
       const angleOffset = 360 / (currentPolygonTileN / 2);
       rotationDeg = edgeAngle + angleOffset / 2;
-    // } else {
-    //   const orth = curBestTile.getOutwardOrthogonal(curBestEdge);
-    //   rotationDeg = Math.atan2(orth.y, orth.x) * (180 / Math.PI);
-    // }
-    // const dx = curBestEdge.end.x - curBestEdge.start.x;
-    // const dy = curBestEdge.end.y - curBestEdge.start.y;
-    // const edgeAngle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-    // const angleOffset = 180 / currentPolygonTileN;
-    // const rotationDeg = edgeAngle - angleOffset;
-
-    // const angleStepDeg = 360 / currentPolygonTileN;
-    // const rotationDeg = edgeAngle - angleStepDeg / 2;
     console.log("angle to rotate new tile: ", rotationDeg);
 
     const newTile = new PolygonTile(
@@ -137,36 +125,30 @@ const TilingCanvas = ({ width, height }: TilingCanvasProps) => {
     setTiling(tiling.addPolygonTile(newTile));
   };
 
+  const handleExportToFOLD = () => { 
+    tiling.toFOLD();
+  }
+
+  // update tiling when w or twist angle changes
+  // useEffect(() => {
+  //   if (tiling.polygonTiles.length === 0) return;
+  //   const newTiling = new Tiling(
+  //     tiling.polygonTiles.map((polygonTile) =>
+  //       polygonTile()(w, twistAngle),
+  //     ),
+  //   )
+  //   setTiling(newTiling);
+  // }, [w, twistAngle]);
+
   //TODO: triangular lattice
   // shift click to close polygons
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col ">
-        <div className="flex items-center justify-between p-4">
-          <ShapesControls onShapeClick={handleShapeClick} />
+        <div className="flex flex-row items-center justify-between p-4">
+          <ShapeSelect onShapeClick={handleShapeClick} currentShape={currentPolygonTileN} />
         </div>
-
-        <div className="flex justify-center border-2 ">
-          <PolygonTileDisplay
-            w={width ? width / 3 : 0}
-            h={height ? height / 2 : 0}
-            n={currentPolygonTileN}
-            pleatWidth={w}
-            tiltAngle={twistAngle}
-          />
-        </div>
-
-        <div className="flex border-2">
-          <PolygonTileParameters
-            w={w}
-            twistAngle={twistAngle}
-            setW={setW}
-            setTwistAngle={setTwistAngle}
-          />
-        </div>
-      </div>
-      <div ref={containerRef} className="h-full w-full border-2">
+      <div ref={containerRef} className=" flex flex-row border-2">
         <Stage width={width} height={height} onDblClick={handleCanvasClick}>
           <Layer>
             {bestSnapPoint && (
@@ -222,6 +204,15 @@ const TilingCanvas = ({ width, height }: TilingCanvasProps) => {
           </Layer>
         </Stage>
       </div>
+      <div className="flex flex-row flex-1 min-w-[300px] p-4">
+          <TilingControls
+          w={w}
+          twistAngle={twistAngle}
+          setW={setW}
+          setTwistAngle={setTwistAngle}
+          onExportToFOLD={handleExportToFOLD}
+          />
+        </div>
     </div>
   );
 };
